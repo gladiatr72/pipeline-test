@@ -4,7 +4,7 @@ pipeline {
 	agent any
 
 	stages {
-		stage "growing the podlings"
+		stage 'growing the podlings'
 
 		podTemplate(cloud: 'k5', label: 'mypod', containers: [
 			containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
