@@ -11,7 +11,7 @@ podTemplate(name: 'pod1', cloud: 'k5', label: 'mypod', containers: [
 pipeline {
 	agent any
 
-	environment {}
+	environment {'THING': 'he likes pie'}}
 	stages {
 		stage('growing the podlings') {
             node ('mypod') {
