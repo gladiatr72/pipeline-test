@@ -14,7 +14,7 @@ pipeline {
 	environment {'THING': 'he likes pie'}}
 	stages {
 		stage('growing the podlings') {
-            node ('mypod') {
+            node('mypod') {
                 stage('Get a Maven project') {
                     steps {
                         git 'https://github.com/jenkinsci/kubernetes-plugin.git'
