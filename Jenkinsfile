@@ -1,7 +1,7 @@
 #!groovy
 
 pipeline {
-	podTemplate(label: 'mypod', containers: [
+	podTemplate(cloud: 'k5', label: 'mypod', containers: [
 		containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
 		containerTemplate(name: 'golang', image: 'golang:1.6.3-alpine', ttyEnabled: true, command: 'cat')
 	  ],
