@@ -12,37 +12,35 @@ podTemplate(name: 'pod1', cloud: 'k5', label: 'mypod', containers: [
 pipeline {
 	agent none
 
-	stages {
-		node('mypod') {
-			stage('Get a Maven project') {
+	node('mypod') {
+		stage('Get a Maven project') {
+			steps {
+				git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+			}
+		}
+		container('maven') {
+			stage('Build a Maven project') {
 				steps {
-					git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+					echo 'a maven build would happen here'
 				}
 			}
-			container('maven') {
-				stage('Build a Maven project') {
-					steps {
-						echo 'a maven build would happen here'
-					}
-				}
-			}
+		}
 
-			stage('Get a Golang project') {
+		stage('Get a Golang project') {
+			steps {
+				git url: 'https://github.com/hashicorp/terraform.git'
+			}
+		}
+
+		container('golang') {
+			stage('Build a Go project') {
 				steps {
-					git url: 'https://github.com/hashicorp/terraform.git'
-				}
-			}
-
-			container('golang') {
-				stage('Build a Go project') {
-					steps {
-						sleep time: 10, unit: 'MINUTES'	
-						sh """
-						mkdir -p /go/src/github.com/hashicorp
-						ln -s `pwd` /go/src/github.com/hashicorp/terraform
-						cd /go/src/github.com/hashicorp/terraform && make core-dev
-					"""
-					}
+					sleep time: 10, unit: 'MINUTES'	
+					sh """
+					mkdir -p /go/src/github.com/hashicorp
+					ln -s `pwd` /go/src/github.com/hashicorp/terraform
+					cd /go/src/github.com/hashicorp/terraform && make core-dev
+				"""
 				}
 			}
 		}
