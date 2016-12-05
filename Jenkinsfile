@@ -12,6 +12,7 @@ podTemplate(name: 'pod1', cloud: 'k5', label: 'mypod', containers: [
 pipeline {
 	agent none
 
+	stages {
 	node('mypod') {
 		stage('Get a Maven project') {
 			steps {
@@ -44,6 +45,7 @@ pipeline {
 				}
 			}
 		}
+	}
 	}
 }
 
