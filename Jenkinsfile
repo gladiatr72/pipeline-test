@@ -1,19 +1,19 @@
-#!groovy
+#!/usr/bin/env groovy
 
 podTemplate(name: 'pod1', cloud: 'k5', label: 'mypod', containers: [
   containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
   containerTemplate(name: 'golang', image: 'golang:1.6.3-alpine', ttyEnabled: true, command: 'cat')
-	],
-	volumes: [
-		secretVolume(secretName: 'shared-secrets', mountPath: '/etc/shared-secrets')
-	]
+        ],
+        volumes: [
+                secretVolume(secretName: 'shared-secrets', mountPath: '/etc/shared-secrets')
+        ]
 )
-pipeline {
-	agent any
 
-	environment {'THING': 'he likes pie'}}
-	stages {
-		stage('growing the podlings') {
+pipeline {
+        agent none
+
+        stages {
+                stage('growing the podlings') {
             node('mypod') {
                 stage('Get a Maven project') {
                     steps {
@@ -23,7 +23,7 @@ pipeline {
                 container('maven') {
                     stage('Build a Maven project') {
                         steps {
-                            sh 'mvn clean install'
+                            echo 'a maven build would happen here'
                         }
                     }
                 }
@@ -36,6 +36,7 @@ pipeline {
 
                 container('golang') {
                     stage('Build a Go project') {
+						sleep time: 10, unit: 'MINUTES'	
                         steps {
                             sh """
                             mkdir -p /go/src/github.com/hashicorp
@@ -49,3 +50,4 @@ pipeline {
         }
     }
 }
+
