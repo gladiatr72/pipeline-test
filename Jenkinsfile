@@ -36,8 +36,8 @@ pipeline {
 
                 container('golang') {
                     stage('Build a Go project') {
-						sleep time: 10, unit: 'MINUTES'	
                         steps {
+							sleep time: 10, unit: 'MINUTES'	
                             sh """
                             mkdir -p /go/src/github.com/hashicorp
                             ln -s `pwd` /go/src/github.com/hashicorp/terraform
