@@ -10,44 +10,42 @@ podTemplate(name: 'pod1', cloud: 'k5', label: 'mypod', containers: [
 )
 
 pipeline {
-        agent none
+	agent none
 
-        stages {
-                stage('growing the podlings') {
-            node('mypod') {
-                stage('Get a Maven project') {
-                    steps {
-                        git 'https://github.com/jenkinsci/kubernetes-plugin.git'
-                    }
-                }
-                container('maven') {
-                    stage('Build a Maven project') {
-                        steps {
-                            echo 'a maven build would happen here'
-                        }
-                    }
-                }
+	stages {
+		node('mypod') {
+			stage('Get a Maven project') {
+				steps {
+					git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+				}
+			}
+			container('maven') {
+				stage('Build a Maven project') {
+					steps {
+						echo 'a maven build would happen here'
+					}
+				}
+			}
 
-                stage('Get a Golang project') {
-                    steps {
-                        git url: 'https://github.com/hashicorp/terraform.git'
-                    }
-                }
+			stage('Get a Golang project') {
+				steps {
+					git url: 'https://github.com/hashicorp/terraform.git'
+				}
+			}
 
-                container('golang') {
-                    stage('Build a Go project') {
-                        steps {
-							sleep time: 10, unit: 'MINUTES'	
-                            sh """
-                            mkdir -p /go/src/github.com/hashicorp
-                            ln -s `pwd` /go/src/github.com/hashicorp/terraform
-                            cd /go/src/github.com/hashicorp/terraform && make core-dev
-                            """
-                        }
-                    }
-                }
-            }
-        }
-    }
+			container('golang') {
+				stage('Build a Go project') {
+					steps {
+						sleep time: 10, unit: 'MINUTES'	
+						sh """
+						mkdir -p /go/src/github.com/hashicorp
+						ln -s `pwd` /go/src/github.com/hashicorp/terraform
+						cd /go/src/github.com/hashicorp/terraform && make core-dev
+					"""
+					}
+				}
+			}
+		}
+	}
 }
 
